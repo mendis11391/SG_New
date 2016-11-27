@@ -1,0 +1,1 @@
+[13-Nov-2016 14:01:05 Asia/Kolkata] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/sgtesting/public_html/sgadmin/upload.php on line 119
