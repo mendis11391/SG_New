@@ -6,17 +6,23 @@ if(!isset($_SESSION["adusername"])){
 }
 ?>
 <?php
+if (!empty($_GET['folder'])) {
+$_SESSION["sgfoldername"] = $_GET['folder'];
+}
+?>
+<?php
 if(isset($_POST['upload']))
 {    
      
 	$file = $_FILES['file']['name'];
   $file_loc = $_FILES['file']['tmp_name'];
 	$file_size = $_FILES['file']['size'];
-	$folder="uploads/";
-  $datetime = date_create()->format('Y-m-d');
+  $folder="uploads/".$_SESSION["sgfoldername"]."/";
+  $now = new DateTime();
+  $datetime = $now->format('Y-m-d');
   $comment = $_POST['uploadcomments'];
-	
   $target_file = $folder . basename($_FILES["file"]["name"]);
+  $belongsto = $_SESSION["sgfoldername"];
 
 	// new file size in KB
 	$new_size = $file_size/1024;  
@@ -31,17 +37,15 @@ if(isset($_POST['upload']))
     ?>
 <script>
 		alert('File already exists');
-        window.location.href='upload.php?fail';
+        window.location.href='upload.php';
         </script>
         <?php
   }
   else{
-		$sql="INSERT INTO uploads(filename,size,created,comments) VALUES('$new_file_name','$new_size','$datetime','$comment')";
-	$query = mysqli_query($mysqli,$sql);
+		$sql="INSERT INTO files (filename,belongsto,size,created,comments) VALUES('$new_file_name','$belongsto','$new_size','$datetime','$comment')";
+	  $query = mysqli_query($mysqli,$sql);
 	if(move_uploaded_file($file_loc,$folder.$new_file_name))
 	{
-		//$sql="INSERT INTO uploads(filename,size,created,comments) VALUES('$new_file_name','$new_size','$datetime','$comment')";
-		//$query = mysqli_query($mysqli,$sql);
 		?>
 		<script>
         window.location.href='upload.php';
@@ -53,7 +57,7 @@ if(isset($_POST['upload']))
 		?>
 		<script>
 		alert('error while uploading file');
-        window.location.href='index.php?fail';
+        window.location.href='upload.php';
         </script>
 		<?php
 	}
@@ -99,9 +103,14 @@ function human_filesize($bytes, $decimals = 2) {
       </div>
     
     <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 box" style="margin-top: 30px;">
+    <div class="">
+      <h2 id="currentfoldernamelabel"><?php echo $_SESSION['sgfoldername'] ?></h2>
+      <input type="hidden" id="currentfoldername">
+    </div>
+
     <br/>
-    <table class="table table-striped displayfiles">
+    <table class="table table-striped displayfiles" id="downloadsList">
     <thead>
       <tr>
         <th>Id</th>
@@ -114,7 +123,7 @@ function human_filesize($bytes, $decimals = 2) {
     </thead>
     <tbody>
     <?php
-      $sql="SELECT * FROM uploads ORDER BY created DESC";
+      $sql="SELECT * FROM files where belongsto='$_SESSION[sgfoldername]'";
       $result_set=mysqli_query($mysqli,$sql);
       while($row=mysqli_fetch_array($result_set))
       {
@@ -122,7 +131,7 @@ function human_filesize($bytes, $decimals = 2) {
       <tr>
       <td><?php echo $row['id'] ?></td>
       <td><?php echo $row['filename'] ?></td>
-      <td><?php echo human_filesize(filesize('uploads/'.$row['filename'])); ?></td>
+      <td><?php echo human_filesize(filesize('uploads/'.$_SESSION['sgfoldername'].'/'.$row['filename'])); ?></td>
       <td><?php echo $row['created'] ?></td>
       <td><?php echo $row['comments'] ?></td>
       <td><a href="javascript:void(0)"><i class="fa fa-trash-o deletefile" aria-hidden="true"></i></a></td>
@@ -130,6 +139,7 @@ function human_filesize($bytes, $decimals = 2) {
     <?php
       }
     ?>
+    
     </tbody>
   </table>
   </div>
@@ -138,5 +148,4 @@ function human_filesize($bytes, $decimals = 2) {
   
 </div><!-- /. Main content-wrapper -->
       
-
 <?php include 'footer.php' ?>

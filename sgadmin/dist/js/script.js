@@ -67,16 +67,18 @@ $(document).on('click', '.deletefile', function(){
     var filename = $(this).parent().parent().parent().find('td:eq(1)').text();
     var string = id ;
     var string1 = filename ;
+    var currentfoldername = $("#currentfoldernamelabel").text();
 
     $.ajax({
         type: "POST",
-        url: "uploadfile.php",
+        url: "deletefile.php",
         data: {
             'id':string,
-            'filename':string1
+            'filename':string1,
+            'currentfoldername':currentfoldername
             },
         cache: false,
-        success: function(){
+        success: function(response){
             location.reload();
         }
     });
@@ -135,4 +137,26 @@ $(document).on('click', '.updatebatch', function(){
             alert("Successfully updated");
         }
     });
+});
+
+$(document).on('click', '#createFolder', function(event){
+event.preventDefault();
+    var folderName = $("#folderName").val();
+
+    if($("#folderName").val()!="" ){
+        $.ajax({
+        type: "POST",
+        url: "createFolder.php",
+        data: {
+            'folderName' : folderName
+        },
+        cache: false,
+        success: function(response){
+            window.location.href = "notes.php";
+        }
+        });
+    }
+    else{
+        alert("Enter name");
+    }   
 });

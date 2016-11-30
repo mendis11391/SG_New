@@ -153,8 +153,8 @@ Change password Modal -->
               <tbody>
               <?php
                 $sql="SELECT * FROM users where isapproved=0";
-                $result_set=mysqli_query($mysqli,$sql);
-                while($row=mysqli_fetch_array($result_set,MYSQLI_BOTH))
+                $result_set = mysqli_query($mysqli,$sql);
+                while($row = mysqli_fetch_array($result_set,MYSQLI_BOTH))
                 {
                 ?>
                 <tr>

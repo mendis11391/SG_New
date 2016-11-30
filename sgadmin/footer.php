@@ -27,6 +27,10 @@
     $('#userList').DataTable({
         "order": [[ 4, "desc" ]],
     });
+
+    $('#downloadsList').DataTable({
+        "order": [[ 0, "desc" ]],
+    });
   });
 </script>
 

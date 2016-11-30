@@ -5,6 +5,11 @@
   echo '<script>window.location = "login.php";</script>';
 }*/
 ?>
+  <?php
+  if (!empty($_GET['folder'])) {
+  $_SESSION["sgfoldername"] = $_GET['folder'];
+  }
+?>
 
 <?php
 function human_filesize($bytes, $decimals = 2) {
@@ -44,14 +49,14 @@ function human_filesize($bytes, $decimals = 2) {
       </thead>
       <tbody>
       <?php
-        $sql="SELECT * FROM uploads ORDER BY created DESC";
+        $sql="SELECT * FROM files where belongsto='$_SESSION[sgfoldername]'";
         $result_set=mysqli_query($mysqli,$sql);
         while($row=mysqli_fetch_array($result_set))
         {
       ?>
        <tr>
-	   <td><a href="sgadmin/uploads/<?php echo $row['filename'] ?>" target="_blank"><?php echo $row['filename'] ?></a></td>
-        <td><?php echo human_filesize(filesize('sgadmin/uploads/'.$row['filename'])); ?></td>
+	   <td><a href="sgadmin/uploads/<?php echo $_SESSION['sgfoldername'] ?>/<?php echo $row['filename'] ?>" target="_blank"><?php echo $row['filename'] ?></a></td>
+        <td><?php echo human_filesize(filesize('sgadmin/uploads/'.$_SESSION['sgfoldername'].'/'.$row['filename'])); ?></td>
         
         
 		<td><?php echo $row['created'] ?></td>

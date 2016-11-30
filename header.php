@@ -81,7 +81,7 @@ session_start();
                       <a href="about.php">About Us</a>
                   </li>
                   <li class="dropdown">
-                      <a href="downloads.php">Downloads</a>
+                      <a href="notes.php">Downloads</a>
                   </li>
                   <!--<li class="dropdown">
                       <a href="http://www.sgtestinginstitute.com/blog/" target="_blank">Blog</a>
